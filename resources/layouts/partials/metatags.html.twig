@@ -115,6 +115,14 @@
     {%- set twitter = twitter|merge(page.social.twitter|default(site.social.twitter)) %}
   {%- endif %}
 {% endif %}
+{# Fediverse #}
+{% set fediverse = {
+  'link': '',
+  'username': '',
+} %}
+{% if page.social.fediverse is defined or site.social.fediverse is defined %}
+  {%- set fediverse = fediverse|merge(page.social.fediverse|default(site.social.fediverse)) %}
+{% endif %}
 {%- block content %}
     {#~ template ~#}
     <title>{% block title %}{{ title_html }}{% endblock %}</title>
@@ -225,6 +233,12 @@
 {%- endif -%}
 {%- if twitter.creator ~%}
     <meta name="twitter:creator" content="@{{ twitter.creator }}" />
+{%- endif ~%}
+{%- if fediverse.username ~%}
+    <meta name="fediverse:creator" content="{{ fediverse.username }}" />
+{%- endif ~%}
+{%- if fediverse.link ~%}
+    <link rel="me" href="{{ fediverse.link }}"/>
 {%- endif ~%}
 {#- template: json-ld ~#}
 {%- include 'partials/jsonld.js.twig' with {'author': author, 'favicon_asset': favicon_asset|default} ~%}
